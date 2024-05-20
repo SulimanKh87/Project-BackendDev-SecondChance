@@ -7,10 +7,12 @@ const pinoLogger = require('./logger');
 const connectToDatabase = require('./models/db');
 const {loadData} = require("./util/import-mongo/index");
 
+// Step 7 Task 1: Import secondChanceItemsRoutes
+const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes');
 
 const app = express();
 app.use("*",cors());
-const port = 3060;
+const port = 3050;
 
 // Connect to MongoDB; we just do this one time
 connectToDatabase().then(() => {
@@ -40,7 +42,10 @@ app.use(pinoHttp({ logger }));
 
 // Use Routes
 // authRoutes Step 2: add the authRoutes and to the server by using the app.use() method.
-//{{insert code here}}
+// Use Routes
+// Step 7 Task 2: Add the secondChanceItemsRoutes to the server by using the app.use() method.
+app.use('/api/secondchance/items', secondChanceItemsRoutes);
+
 
 // Items API Task 2: add the secondChanceItemsRoutes to the server by using the app.use() method.
 //{{insert code here}}
