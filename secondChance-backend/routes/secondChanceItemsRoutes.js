@@ -46,50 +46,30 @@ router.get('/', async (req, res, next) => {
 
 // POST endpoint
 // Add a new item
-// router.post('/', { Step 3: Task 6 insert code here }, async (req, res, next) => {
-    router.post('/', upload.single('file'), async(req, res,next)  => {
+router.post('/', upload.single('file'), async (req, res, next) => {
     try {
-
-        //Step 3: Task 1: Connect to MongoDB
+        // Task 1: Connect to MongoDB
         const db = await connectToDatabase();
-        //Step 3: Task 2: Use the collection() method to retrieve the secondChanceItems collection
+        // Task 2: Use the collection() method to retrieve the secondChanceItems collection
         const collection = db.collection("secondChanceItems");
-        //Step 3:ask 3: Create a new secondChanceItem from the request body
-        let secondChanceItem = req.body;
-        //Step 3: Task 4: Get the last id, increment it by 1, and set it to the new secondChanceItem
+        // task 3 Task 3: Create a new secondChanceItem from the request body
         const lastItemQuery = await collection.find().sort({ 'id': -1 }).limit(1);
+        // Task 4: Get the last id, increment it by 1, and set it to the new secondChanceItem
+        let secondChanceItem = req.body;
         await lastItemQuery.forEach(item => {
             secondChanceItem.id = (parseInt(item.id) + 1).toString();
         });
-        //Step 3: Task 5: Set the current date to the new item
+        // Task 5: Set the current date to the new item
         const date_added = Math.floor(new Date().getTime() / 1000);
         secondChanceItem.date_added = date_added
-         // Step 3: Task 6: Add the secondChanceItem to the database
-         const result = await collection.insertOne(secondChanceItem);
-         if (result.insertedCount === 1) {
-             res.status(201).json(result.ops[0]);
-         } else {
-             throw new Error("Failed to insert secondChanceItem");
-         }
+        // Task 6: Add the secondChanceItem to the database
+        secondChanceItem = await collection.insertOne(secondChanceItem);
+        console.log(secondChanceItem);
+        res.status(201).json(secondChanceItem);
     } catch (e) {
         next(e);
     }
-});
-
-// // Add a new item
-// router.post('/', {Step 3: Task 6 insert code here}, async(req, res,next) => {
-//     try {
-
-//         //Step 3: task 1 - insert code here
-//         //Step 3: task 2 - insert code here
-//         //Step 3: task 3 - insert code here
-//         //Step 3: task 4 - insert code here
-//         //Step 3: task 5 - insert code here
-//         res.status(201).json(secondChanceItem.ops[0]);
-//     } catch (e) {
-//         next(e);
-//     }
-// });
+});;
 
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
