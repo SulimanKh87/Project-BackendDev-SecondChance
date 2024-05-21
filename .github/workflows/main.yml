@@ -7,27 +7,6 @@ on:
 
 jobs:
   lint_js:
-    name: Lint JavaScript Files
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '14'
-
-      - name: Install ESLint and Dependencies
-        run: |
-          npm install eslint eslint-config-standard eslint-plugin-import eslint-plugin-node eslint-plugin-promise --save-dev
-
-      - name: Lint JavaScript Files and Auto-fix
-        run: |
-          
-
-jobs:
-  lint_js:
       name: Lint JavaScript Files
       runs-on: ubuntu-latest
       steps:
